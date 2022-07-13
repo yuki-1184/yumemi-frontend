@@ -13,18 +13,17 @@ function Profile({ apiKey }) {
   const [checkedPrefs, setCheckedPrefs] = useState([]);
 
   useEffect(() => {
-    console.log(apiKey);
     const storedPrefectures = JSON.parse(
       localStorage.getItem(LOCAL_STORAGE_KEY)
     );
     const storedPopulations = JSON.parse(
       localStorage.getItem(LOCAL_STORAGE_KEY2)
     );
-    if (storedPrefectures.length > 0) {
-      setPrefectures(storedPrefectures);
-    }
-    if (storedPopulations.length > 0) {
+    if (storedPopulations) {
       setPopulations(storedPopulations);
+    }
+    if (storedPrefectures) {
+      setPrefectures(storedPrefectures);
     } else {
       fetchPrefecture(apiKey).then((prefData) => {
         setPrefectures(
@@ -117,7 +116,6 @@ async function fetchPopulation(apiKey, prefCode) {
       `RESAS API result was not ok. json=${JSON.stringify(json)}`
     );
   }
-  // console.log(json.result.data[0].data)
   return json.result.data[0].data;
 }
 

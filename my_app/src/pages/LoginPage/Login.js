@@ -33,7 +33,7 @@ export default function Login({ changeApiKey }) {
   return (
     <>
       {success ? (
-        <Navigate to="/profile" />
+        <Navigate to="/" />
       ) : (
         <div className="App">
           <section>
@@ -72,7 +72,6 @@ export default function Login({ changeApiKey }) {
 }
 
 async function verifyApiKey(apiKey) {
-  console.log(apiKey);
   const url = `${RESAS_ENDPOINT}/api/v1/prefectures`;
   const request = new Request(url, {
     method: "GET",

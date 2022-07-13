@@ -14,7 +14,6 @@ function App() {
     if (storedApiKey) {
       setApiKey(storedApiKey);
     }
-    console.log();
   }, []);
 
   useEffect(() => {
@@ -24,23 +23,22 @@ function App() {
   function onChangeApiKey(newApiKey) {
     setApiKey(newApiKey);
   }
-
   return (
     <Router>
       <Routes>
         <Route
           exact
           path="/"
-          element={<Login changeApiKey={onChangeApiKey} />}
-        ></Route>
-        <Route
-          exact
-          path="/profile"
           element={
             <RequireApiClient apiKey={apiKey}>
               <Profile apiKey={apiKey} />
             </RequireApiClient>
           }
+        ></Route>
+        <Route
+          exact
+          path="/login"
+          element={<Login changeApiKey={onChangeApiKey} />}
         ></Route>
       </Routes>
     </Router>
