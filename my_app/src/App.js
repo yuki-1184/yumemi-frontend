@@ -24,7 +24,7 @@ function App() {
     setApiKey(newApiKey);
   }
   return (
-    <Router>
+    <Router basename="/yumemi-frontend">
       <Routes>
         <Route
           exact
