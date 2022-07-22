@@ -78,7 +78,7 @@ function Profile({ apiKey }) {
   }
 
   return (
-    <div>
+    <div className="prefPopuPage">
       <h1>都道府県</h1>
       <div className="PrefecturesCheckBox">
         <ShowPrefectures prefectures={prefectures} togglePref={togglePref} />

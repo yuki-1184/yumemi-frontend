@@ -1,8 +1,96 @@
-import React from "react";
+import React, { useState } from "react";
 import Highcharts from "highcharts";
 import HighchartsReact from "highcharts-react-official";
+import "./CheckBox.css";
 
-function createOptions(series) {
+export default function PopulationGraph({ checkedPrefs, populations }) {
+  const [startYear, setStartYear] = useState(1960);
+  const [endYear, setEndYear] = useState(2045);
+
+  const categories = createCategories(startYear, endYear);
+  const series = createSeries(categories, checkedPrefs, populations);
+  const options = createOptions(categories, series);
+
+  function handleReset() {
+    setStartYear(1960);
+    setEndYear(2045);
+  }
+
+  return (
+    <>
+      <div>
+        <br></br>
+        <br></br>
+        <br></br>
+        <HighchartsReact highcharts={Highcharts} options={options} />
+        <br></br>
+        <div className="hc_setting">
+          <div className="yearRange">
+            年代を指定：
+            <select
+              id="startYear"
+              name="startYear"
+              value={startYear}
+              onChange={(e) => setStartYear(e.target.value)}
+            >
+              <option value="1960">1960</option>
+              <option value="1965">1965</option>
+              <option value="1970">1970</option>
+              <option value="1975">1975</option>
+              <option value="1980">1980</option>
+              <option value="1985">1985</option>
+              <option value="1990">1990</option>
+              <option value="1995">1995</option>
+              <option value="2000">2000</option>
+              <option value="2005">2005</option>
+              <option value="2010">2010</option>
+              <option value="2015">2015</option>
+              <option value="2020">2020</option>
+              <option value="2025">2025</option>
+              <option value="2030">2030</option>
+              <option value="2035">2035</option>
+              <option value="2040">2040</option>
+              <option value="2045">2045</option>
+            </select>
+            〜
+            <select
+              id="endYear"
+              name="endYear"
+              value={endYear}
+              onChange={(e) => setEndYear(e.target.value)}
+            >
+              <option value="2045">2045</option>
+              <option value="2040">2040</option>
+              <option value="2035">2035</option>
+              <option value="2030">2030</option>
+              <option value="2025">2025</option>
+              <option value="2020">2020</option>
+              <option value="2015">2015</option>
+              <option value="2010">2010</option>
+              <option value="2005">2005</option>
+              <option value="2000">2000</option>
+              <option value="1995">1995</option>
+              <option value="1990">1990</option>
+              <option value="1985">1985</option>
+              <option value="1980">1980</option>
+              <option value="1975">1975</option>
+              <option value="1970">1970</option>
+              <option value="1965">1965</option>
+              <option value="1960">1960</option>
+            </select>
+            年{" "}
+          </div>
+          <button className="resetYear" onClick={handleReset}>
+            リセット
+          </button>
+        </div>
+        <br></br>
+      </div>
+    </>
+  );
+}
+
+function createOptions(categories, series) {
   return {
     title: {
       text: "人口推移（都道府県別）",
@@ -14,10 +102,7 @@ function createOptions(series) {
       title: {
         text: "年度",
       },
-      categories: [
-        1960, 1965, 1970, 1975, 1980, 1985, 1990, 1995, 2000, 2005, 2010, 2015,
-        2020, 2025, 2030, 2035, 2040, 2045,
-      ],
+      categories: categories,
       gridLineWidth: 1,
       tickInterval: 3,
       crosshair: true,
@@ -49,7 +134,7 @@ function createOptions(series) {
   };
 }
 
-function createSeries(checkedPrefs, populations) {
+function createSeries(categories, checkedPrefs, populations) {
   let series = [];
 
   if (checkedPrefs.length === 0) {
@@ -59,9 +144,10 @@ function createSeries(checkedPrefs, populations) {
     let popu_data = [];
     const cur_pref = populations[pref.prefCode];
     if (cur_pref) {
-      for (let i = 0; i < cur_pref.popuData.length; i++) {
-        popu_data.push(cur_pref.popuData[i].value);
-      }
+      categories.forEach((year) => {
+        let idx = (year - 1960) / 5;
+        popu_data.push(cur_pref.popuData[idx].value);
+      });
       series.push({ name: pref.prefName, data: popu_data });
     }
   });
@@ -69,127 +155,16 @@ function createSeries(checkedPrefs, populations) {
   return series;
 }
 
-export default function PopulationGraph({ checkedPrefs, populations }) {
-  // const [yearRange, setYearRange] = useState([1960, 2045]);
-  // const [startYear, setStartYear] = useState(1960);
-  // const [endYear, setEndYear] = useState(2045);
-  const series = createSeries(checkedPrefs, populations);
-  const options = createOptions(series);
-
-  return (
-    <>
-      <div>
-        <br></br>
-        <br></br>
-        <br></br>
-        <HighchartsReact highcharts={Highcharts} options={options} />
-        <br></br>
-        <div className="yearRange">
-          年代を指定：
-          <select name="startYear">
-            <option value="1960">1960</option>
-            <option value="1965">1965</option>
-            <option value="1970">1970</option>
-            <option value="1975">1975</option>
-            <option value="1980">1980</option>
-            <option value="1985">1985</option>
-            <option value="1990">1990</option>
-            <option value="1995">1995</option>
-            <option value="2000">2000</option>
-            <option value="2005">2005</option>
-            <option value="2010">2010</option>
-            <option value="2015">2015</option>
-            <option value="2020">2020</option>
-            <option value="2025">2025</option>
-            <option value="2030">2030</option>
-            <option value="2035">2035</option>
-            <option value="2040">2040</option>
-            <option value="2045">2045</option>
-          </select>
-          〜
-          <select name="endYear">
-            <option value="2045">2045</option>
-            <option value="2040">2040</option>
-            <option value="2035">2035</option>
-            <option value="2030">2030</option>
-            <option value="2025">2025</option>
-            <option value="2020">2020</option>
-            <option value="2015">2015</option>
-            <option value="2010">2010</option>
-            <option value="2005">2005</option>
-            <option value="2000">2000</option>
-            <option value="1995">1995</option>
-            <option value="1990">1990</option>
-            <option value="1985">1985</option>
-            <option value="1980">1980</option>
-            <option value="1975">1975</option>
-            <option value="1970">1970</option>
-            <option value="1965">1965</option>
-            <option value="1960">1960</option>
-          </select>
-          年 <button className="p2_yearrange">更新</button>
-        </div>
-        <br></br>
-      </div>
-    </>
-  );
+function createCategories(startYear, endYear) {
+  let categories = [];
+  let year = parseInt(startYear);
+  for (year; year <= endYear; year += 5) {
+    categories.push(year);
+  }
+  return categories;
 }
 
-// function iterPopu(population) {
-//   const data = [];
-//   population.popuData.map((popu) => {
-//     data.push(popu.value);
-//   });
-//   return data;
-// }
-
-// const population = [
-//   {
-//     prefName: "福島県",
-//     prefCode: 7,
-//     popuData: [
-//       { year: 1960, value: 2051137 },
-//       { year: 1965, value: 1983754 },
-//       { year: 1970, value: 1946077 },
-//       { year: 1975, value: 1970616 },
-//       { year: 1980, value: 2035272 },
-//       { year: 1985, value: 2080304 },
-//       { year: 1990, value: 2104058 },
-//       { year: 1995, value: 2133592 },
-//       { year: 2000, value: 2126935 },
-//       { year: 2005, value: 2091319 },
-//       { year: 2010, value: 2029064 },
-//       { year: 2015, value: 1914039 },
-//       { year: 2020, value: 1827632 },
-//       { year: 2025, value: 1733103 },
-//       { year: 2030, value: 1635235 },
-//       { year: 2035, value: 1533521 },
-//       { year: 2040, value: 1426392 },
-//       { year: 2045, value: 1314903 },
-//     ],
-//   },
-//   {
-//     prefName: "神奈川県",
-//     prefCode: 14,
-//     popuData: [
-//       { year: 1960, value: 3443176 },
-//       { year: 1965, value: 4430743 },
-//       { year: 1970, value: 5472247 },
-//       { year: 1975, value: 6397748 },
-//       { year: 1980, value: 6924348 },
-//       { year: 1985, value: 7431974 },
-//       { year: 1990, value: 7980391 },
-//       { year: 1995, value: 8245900 },
-//       { year: 2000, value: 8489974 },
-//       { year: 2005, value: 8791597 },
-//       { year: 2010, value: 9048331 },
-//       { year: 2015, value: 9126214 },
-//       { year: 2020, value: 9141394 },
-//       { year: 2025, value: 9069562 },
-//       { year: 2030, value: 8933474 },
-//       { year: 2035, value: 8750958 },
-//       { year: 2040, value: 8541016 },
-//       { year: 2045, value: 8312524 },
-//     ],
-//   },
+// [
+//   1960, 1965, 1970, 1975, 1980, 1985, 1990, 1995, 2000, 2005, 2010, 2015,
+//   2020, 2025, 2030, 2035, 2040, 2045,
 // ];
