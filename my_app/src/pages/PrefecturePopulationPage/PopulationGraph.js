@@ -134,6 +134,7 @@ function createOptions(categories, series) {
   };
 }
 
+// create series (y-axis) used in highchart by checking checkedPrefs
 function createSeries(categories, checkedPrefs, populations) {
   let series = [];
 
@@ -155,6 +156,7 @@ function createSeries(categories, checkedPrefs, populations) {
   return series;
 }
 
+// create categories (x-axis) used in highchart, takes arguments of startYear and endYear
 function createCategories(startYear, endYear) {
   let categories = [];
   let year = parseInt(startYear);
