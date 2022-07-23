@@ -1,6 +1,7 @@
 .prefPopuPage {
   align-items: center;
-  padding-left: 30px;
+  padding-left: 20px;
+  padding-right: 20px;
   width: 100%;
 }
 
@@ -26,6 +27,28 @@
   font-family: "Nunito", sans-serif;
   align-items: right;
   border-radius: 0.3rem;
+  padding: 0.15rem;
 }
 
+.resetYear:hover {
+  box-shadow: inset 4rem 0 0 0 lightgreen;
+}
 
+.prefReset {
+  display: flex;
+  padding-top: 30px;
+}
+
+.resetPrefectures {
+  display: flex;
+  border-radius: 0.3rem;
+  margin-left: auto;
+  margin-right: auto;
+  justify-content: center;
+  width: 10em;
+  padding: 0.15rem;
+}
+
+.resetPrefectures:hover {
+  box-shadow: inset 10em 0 0 0 lightgreen;
+}

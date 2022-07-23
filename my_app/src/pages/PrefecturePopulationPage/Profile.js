@@ -77,11 +77,23 @@ function Profile({ apiKey }) {
     setPrefectures(newPrefectures);
   }
 
+  function resetPrefectures() {
+    checkedPrefs.forEach((pref) => {
+      togglePref(pref.prefCode);
+    });
+    setCheckedPrefs([]);
+  }
+
   return (
     <div className="prefPopuPage">
       <h1>都道府県</h1>
       <div className="PrefecturesCheckBox">
         <ShowPrefectures prefectures={prefectures} togglePref={togglePref} />
+        <div className="prefReset">
+          <button className="resetPrefectures" onClick={resetPrefectures}>
+            リセット
+          </button>
+        </div>
       </div>
       <PopulationGraph checkedPrefs={checkedPrefs} populations={populations} />
     </div>
