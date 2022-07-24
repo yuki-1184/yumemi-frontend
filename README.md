@@ -20,5 +20,5 @@ Link: https://yuki-1184.github.io/yumemi-frontend/
 - JavaScript
 - React
 - Highcharts
-- ESLing 　（リンター）
+- ESLint 　（リンター）
 - Prettier を用いたフォーマット
